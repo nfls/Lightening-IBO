@@ -6,7 +6,6 @@ public class BulletController : MonoBehaviour {
 
 	public float damage = 20;
 	public float lifespan = 5;
-	public string orientedTag = null;
 	public bool damagePlayer = false;
 	public bool damageEnemy = false;
 	public bool damageBoss = false;
@@ -25,7 +24,7 @@ public class BulletController : MonoBehaviour {
 		Destroy (gameObject);
 	}
 
-	void OnTriggerEnter (Collider2D collider2d) {
+	void OnTriggerEnter2D (Collider2D collider2d) {
 	
 		GameObject collisionObject = collider2d.gameObject;
 		string objectTag = gameObject.tag;
@@ -34,36 +33,33 @@ public class BulletController : MonoBehaviour {
 			if (objectTag.Equals ("Player")) {
 				OnHitJet (collisionObject);
 			}
-		}
-
-		if (damageEnemy) {
+		} else if (damageEnemy) {
 			if (objectTag.Equals ("Enemy")) {
 				OnHitJet (collisionObject);
 			}
-		}
-
-		if (damageBoss) {
+		} else if (damageBoss) {
 			if (objectTag.Equals ("Boss")) {
 				OnHitJet (collisionObject);
 			}
 		}
 	}
 
-	void OnTriggerStay (Collider2D collider2d) {
+	void OnTriggerStay2D (Collider2D collider2d) {
 	
 	}
 
-	void OnTriggerExit (Collider2D collider2d) {
+	void OnTriggerExit2D (Collider2D collider2d) {
 
 		GameObject collisionObject = collider2d.gameObject;
 
-		if (gameObject.tag.Equals ("WorldEdge")) {
+		if (collisionObject.tag.Contains ("Edge")) {
 			OnHitWorldEdge ();
 		}
 	}
 
 	void OnHitJet (GameObject jet) {
-	
+		JetController controller = jet.GetComponent <JetController> ();
+		controller.OnDamage (damage);
 	}
 
 	void OnHitWorldEdge () {
