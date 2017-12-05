@@ -4,9 +4,6 @@ using UnityEngine;
 
 public class ShooterGroupController : MonoBehaviour {
 
-	public const int LEFT = 0;
-	public const int RIGHT = 1;
-
 	public bool fireEnabled = true;
 	public float fireInterval = 2;
 	public float bulletInterval = 0.2f;
@@ -27,13 +24,13 @@ public class ShooterGroupController : MonoBehaviour {
 	public float bulletRotationLeft = 0;
 	public float bulletRotationRight = 0;
 	public bool hasTarget = false;
+	public JetType targetType = JetType.Null;
 
 	private int bulletCount = 1;
 
 	public GameObject shooterLeft = null;
 	public GameObject shooterRight = null;
 	public GameObject bulletPrototype = null;
-	public GameObject target = null;
 
 	void Start () {
 
@@ -59,7 +56,7 @@ public class ShooterGroupController : MonoBehaviour {
 	void BulletTimer () {
 
 		if (!bulletPrototype.Equals (null)) {
-			if (!hasTarget || target.Equals (null)) {
+			if (!hasTarget || targetType.Equals (JetType.Null)) {
 				Fire ();
 			} else {
 				FireTarget ();
@@ -137,6 +134,12 @@ public class ShooterGroupController : MonoBehaviour {
 	}
 
 	void FireTarget () {
+		GameObject target = GameObject.FindGameObjectWithTag (targetType.ToString ()) ;
+
+		if (target.Equals (null)) {
+			return;
+		}
+
 		Vector2 offsetLeft;
 		Vector2 offsetRight;
 		Vector2 accelerationLeft;
